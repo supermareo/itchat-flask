@@ -227,6 +227,19 @@ ul li {
     width: 60px;
 }
 
+.sidestrip_icon i {
+    width: 100%;
+    height: 24px;
+    display: block;
+    margin-bottom: 30px;
+    font-size: 20px;
+    color: #919191;
+}
+
+.sidestrip_icon .cur {
+    color: #4bb722;
+}
+
 .sidestrip_icon a {
     width: 100%;
     height: 24px;
@@ -280,8 +293,8 @@ ul.am-dropdown-content > li > a:focus, ul.am-dropdown-content > li > a:hover {
 }
 
 .middle {
-    width: 250px;
-    height: 100%;
+    width: 800px;
+    height: 680px;
     float: left;
     background: #e6e5e5;
     overflow: hidden;
