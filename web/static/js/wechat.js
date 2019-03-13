@@ -141,22 +141,41 @@ function load_locations() {
                 color: '#ccc'
             }
         },
-        dataset: {
-            source: [
-                ['product', '2015', '2016', '2017'],
-                ['Matcha Latte', 43.3, 85.8, 93.7],
-                ['Milk Tea', 83.1, 73.4, 55.1],
-                ['Cheese Cocoa', 86.4, 65.2, 82.5],
-                ['Walnut Brownie', 72.4, 53.9, 39.1]
-            ]
+        tooltip: {
+            trigger: 'axis'
         },
-        xAxis: {type: 'category'},
-        yAxis: {},
-        // Declare several bar series, each will be mapped
-        // to a column of dataset.source by default.
-        series: [
-            {type: 'bar'}
-        ]
+        xAxis: {
+            type: 'category',
+            data: ['江苏', '河北', '河南', '安徽', '浙江', '深圳', '乌鲁木齐', 'A', 'B', 'C', 'D', 'E', 'F'],
+            axisLabel: {
+                interval: 0,
+                color: '#ccc',
+                rotate: 40
+            },
+            axisLine: {
+                lineStyle: {
+                    color: '#ccc'
+                }
+            }
+        },
+        yAxis: {
+            type: 'value',
+            splitLine: {
+                show: false
+            },
+            axisLabel: {
+                color: '#ccc'
+            },
+            axisLine: {
+                lineStyle: {
+                    color: '#ccc'
+                }
+            }
+        },
+        series: [{
+            data: [120, 2000, 150, 80, 70, 110, 130, 99, 120, 221, 324, 112, 90],
+            type: 'bar'
+        }]
     };
 
 
