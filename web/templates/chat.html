@@ -38,36 +38,40 @@
             <!--三图标-->
             <div class="sidestrip_icon">
                 <!--性别分布-->
-                <i id="item-gender" class="fa fa-venus-mars"></i>
-                <!--头像大图-->
-                <i id="item-avatars" class="fa fa-users"></i>
+                <i id="item-gender" class="tab fa fa-venus-mars cur"
+                   onclick="changeTab('item-gender','tab-content-gender',load_gender())"></i>
+                <!--头像照片墙-->
+                <i id="item-avatars" class="tab fa fa-users"
+                   onclick="changeTab('item-avatars','tab-content-avatar')"></i>
                 <!--签名词云-->
-                <i id="item-wordcloud" class="fa fa-cloud"></i>
+                <i id="item-wordcloud" class="tab fa fa-cloud"
+                   onclick="changeTab('item-wordcloud','tab-content-wordcloud')"></i>
                 <!--位置分布-->
-                <i id="item-locations" class="fa fa-paper-plane cur"></i>
+                <i id="item-locations" class="tab fa fa-paper-plane"
+                   onclick="changeTab('item-locations','tab-content-locations',load_locations())"></i>
             </div>
 
         </div>
 
         <!--性别分布-->
-        <div class="middle">
+        <div class="middle on" id="tab-content-gender">
             <!--性别分布-->
-            <div id="ec-gender" style="width: 100%;height: 100%"></div>
+            <div id="ec-gender" style="width: 800px;height: 680px"></div>
         </div>
 
-        <!--头像大图-->
-        <div class="middle">
-            头像大图
+        <!--头像照片墙-->
+        <div class="middle" id="tab-content-avatar">
+            <div id="avatar-wall" style="width: 800px;height: 680px"></div>
         </div>
 
         <!--签名词云-->
-        <div class="middle">
-            签名词云
+        <div class="middle" id="tab-content-wordcloud">
+            <div id="word-cloud" style="width: 800px;height: 680px"></div>
         </div>
 
         <!--位置分布-->
-        <div class="middle on">
-            <div id="ec-locations" style="width: 100%;height: 100%"></div>
+        <div class="middle" id="tab-content-locations">
+            <div id="ec-locations" style="width: 800px;height: 680px"></div>
         </div>
 
     </div>
@@ -83,9 +87,9 @@
     //三图标
     window.onload = function () {
         //加载性别分布图
-        // load_gender();
+        load_gender();
         //加载地域分布图
-        load_locations();
+        // load_locations();
     };
 </script>
 

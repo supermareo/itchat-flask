@@ -43,10 +43,15 @@ window.onload = function b() {
             talk.style.background = "#fff";
             text.style.background = "#fff";
         }
-        ;
     };
 };
 
+function changeTab(iid, did) {
+    $('.tab').removeClass('cur');
+    $('#' + iid).addClass('cur');
+    $('.middle').removeClass('on');
+    $('#' + did).addClass('on');
+}
 
 function load_gender() {
     // 基于准备好的dom，初始化echarts实例
@@ -181,6 +186,10 @@ function load_locations() {
 
     // 使用刚指定的配置项和数据显示图表。
     myChart.setOption(option);
+}
+
+function load_photos() {
+
 }
 
 // function load_locations() {
