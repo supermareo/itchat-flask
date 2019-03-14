@@ -296,7 +296,7 @@ ul.am-dropdown-content > li > a:focus, ul.am-dropdown-content > li > a:hover {
     width: 800px;
     height: 680px;
     float: left;
-    background: #e6e5e5;
+    background: #2c343c;
     overflow: hidden;
     display: none;
 }
@@ -789,33 +789,18 @@ ul.am-dropdown-content > li > a:focus, ul.am-dropdown-content > li > a:hover {
     right: 100%;
 }
 
+.fleft {
+    width: 800px;
+    height: 680px;
+    overflow: hidden;
+    padding-left: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+.fleft .fleftContent {
+    width: 102%;
+    height: 100%;
+    overflow: auto;
+    overflow-x: hidden;
+}

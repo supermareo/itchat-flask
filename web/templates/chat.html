@@ -6,7 +6,11 @@
     <link rel="stylesheet" href="../static/css/amazeui.min.css"/>
     <link rel="stylesheet" href="../static/css/main.css"/>
     <link rel="stylesheet" href="../static/font-awesome-4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="../static/css/3dimages-mine.css"/>
+    <style rel="stylesheet">
+        selector::-webkit-scrollbar {
+            width: 0;
+        }
+    </style>
 </head>
 <body>
 <div class="box">
@@ -39,10 +43,10 @@
             <!--三图标-->
             <div class="sidestrip_icon">
                 <!--性别分布-->
-                <i id="item-gender" class="tab fa fa-venus-mars cur"
+                <i id="item-gender" class="tab fa fa-venus-mars"
                    onclick="changeTab('item-gender','tab-content-gender',load_gender())"></i>
                 <!--头像照片墙-->
-                <i id="item-avatars" class="tab fa fa-users"
+                <i id="item-avatars" class="tab fa fa-users cur"
                    onclick="changeTab('item-avatars','tab-content-avatar',load_avatars())"></i>
                 <!--签名词云-->
                 <i id="item-wordcloud" class="tab fa fa-cloud"
@@ -55,24 +59,22 @@
         </div>
 
         <!--性别分布-->
-        <div class="middle on" id="tab-content-gender">
+        <div class="middle" id="tab-content-gender">
             <!--性别分布-->
             <div id="ec-gender" style="width: 800px;height: 680px"></div>
         </div>
 
         <!--头像照片墙-->
-        <div class="middle" id="tab-content-avatar">
-            <div id="avatar-wall" style="width: 800px;height: 680px;position: relative">
-                <div id="command">
-                    <div id="bar"></div>
-                </div>
-                <div id="urlInfo"></div>
+        <div class="middle on" id="tab-content-avatar">
+            <div class="fleft">
+                <div class="fleftContent" id="avatar-wall"></div>
             </div>
+            <!--<div id="avatar-wall" style="width: 800px;height: 680px;padding: 10px;overflow: scroll"></div>-->
         </div>
 
         <!--签名词云-->
         <div class="middle" id="tab-content-wordcloud">
-            <div id="word-cloud" style="width: 800px;height: 680px"></div>
+            <div id="word-cloud" style="width: 800px;height: 680px;"></div>
         </div>
 
         <!--位置分布-->
@@ -86,7 +88,6 @@
 <script type="text/javascript" src="../static/js/jquery.min.js"></script>
 <script type="text/javascript" src="../static/js/amazeui.min.js"></script>
 <script type="text/javascript" src="../static/js/zUI.js"></script>
-<script type="text/javascript" src="../static/js/3dimages-mine.js"></script>
 <script type="text/javascript" src="../static/echarts/js/echarts.min.js"></script>
 <script type="text/javascript" src="../static/js/wechat.js"></script>
 <script type="text/javascript">
@@ -94,9 +95,10 @@
     //三图标
     window.onload = function () {
         //加载性别分布图
-        load_gender();
+        // load_gender();
         //加载地域分布图
         // load_locations();
+        load_avatars();
     };
 </script>
 
