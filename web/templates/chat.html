@@ -46,11 +46,11 @@
                 <i id="item-gender" class="tab fa fa-venus-mars"
                    onclick="changeTab('item-gender','tab-content-gender',load_gender())"></i>
                 <!--头像照片墙-->
-                <i id="item-avatars" class="tab fa fa-users cur"
+                <i id="item-avatars" class="tab fa fa-users"
                    onclick="changeTab('item-avatars','tab-content-avatar',load_avatars())"></i>
                 <!--签名词云-->
-                <i id="item-wordcloud" class="tab fa fa-cloud"
-                   onclick="changeTab('item-wordcloud','tab-content-wordcloud')"></i>
+                <i id="item-wordcloud" class="tab fa fa-cloud cur"
+                   onclick="changeTab('item-wordcloud','tab-content-wordcloud',load_wordcloud())"></i>
                 <!--位置分布-->
                 <i id="item-locations" class="tab fa fa-paper-plane"
                    onclick="changeTab('item-locations','tab-content-locations',load_locations())"></i>
@@ -65,15 +65,14 @@
         </div>
 
         <!--头像照片墙-->
-        <div class="middle on" id="tab-content-avatar">
+        <div class="middle" id="tab-content-avatar">
             <div class="fleft">
                 <div class="fleftContent" id="avatar-wall"></div>
             </div>
-            <!--<div id="avatar-wall" style="width: 800px;height: 680px;padding: 10px;overflow: scroll"></div>-->
         </div>
 
         <!--签名词云-->
-        <div class="middle" id="tab-content-wordcloud">
+        <div class="middle on" id="tab-content-wordcloud">
             <div id="word-cloud" style="width: 800px;height: 680px;"></div>
         </div>
 
@@ -89,6 +88,7 @@
 <script type="text/javascript" src="../static/js/amazeui.min.js"></script>
 <script type="text/javascript" src="../static/js/zUI.js"></script>
 <script type="text/javascript" src="../static/echarts/js/echarts.min.js"></script>
+<script type="text/javascript" src="../static/js/wordcloud2.js"></script>
 <script type="text/javascript" src="../static/js/wechat.js"></script>
 <script type="text/javascript">
 
@@ -98,8 +98,12 @@
         // load_gender();
         //加载地域分布图
         // load_locations();
-        load_avatars();
+        //加载头像
+        // load_avatars();
+        //加载词云
+        load_wordcloud();
     };
+
 </script>
 
 

@@ -140,6 +140,47 @@ function load_avatars() {
     }
 }
 
+let is_word_cloud_loaded = false;
+
+function randomWor() {
+    var chinese = ['啊', '是', '额', '想', '的', '个', '去', '好', '需', '看', '屁', '吗', '吧', '就', '旧', '小', '晓'];
+    var index1 = chinese[Math.round(Math.random() * chinese.length)];
+    var index2 = chinese[Math.round(Math.random() * chinese.length)];
+    return index1 + index2;
+}
+
+//加载词云
+function load_wordcloud() {
+    if (is_word_cloud_loaded) {
+        return
+    }
+
+    var wordFreqData = [];
+    for (var i = 0; i < 500; i++) {
+        wordFreqData.push([randomWor(), Math.round(Math.random() * 1000)])
+    }
+
+    var canvas = document.getElementById('word-cloud');
+    var options = eval({
+        list: wordFreqData,
+        gridSize: Math.round(16 * $('#word-cloud').width() / 1024),
+        weightFactor: function (size) {
+            return size * $('#word-cloud').width() / 4096
+        },
+        fontFamily: 'Times, serif',
+        color: "random-light",
+        rotateRatio: 0.5,
+        // rotationSteps: 2,
+        backgroundColor: '#2c343c',
+        minFontSize: 6, //最小字号
+        fontWeight: 'normal', //字体粗细
+    });
+    //生成
+    WordCloud(canvas, options);
+
+    is_word_cloud_loaded = true
+}
+
 //加载地域分布表
 function load_locations() {
     // 基于准备好的dom，初始化echarts实例
