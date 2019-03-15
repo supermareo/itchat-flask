@@ -1,11 +1,13 @@
+const uid = $('#uid').text();
+console.log('generate uid', uid);
 //底部扩展键
 $(function () {
     $('#doc-dropdown-js').dropdown({justify: '#doc-dropdown-justify-js'});
-});
-
-$(function () {
     $(".office_text").panel({iWheelStep: 32});
 });
+
+// $(function () {
+// });
 
 //tab for three icon	
 $(document).ready(function () {
@@ -52,6 +54,85 @@ function changeTab(iid, did) {
     $('.middle').removeClass('on');
     $('#' + did).addClass('on');
 }
+
+//个人信息
+var self = {};
+//好友信息
+var contacts = [];
+
+function get_contacts() {
+    $.ajax({
+        url: 'http://127.0.0.1:5000/api/contacts/' + uid,
+        beforeSend: function (xhr) {
+            console.log('before send');
+        },
+        success: function (result, status, xhr) {
+            success = result['success'];
+            console.log('success', success);
+            data = result['data'];
+            self = data[0];
+            fill_self_info();
+            contacts = data.slice(1);
+            load_avatars();
+        },
+        error: function (xhr, status, error) {
+            console.log('error', status, error, xhr)
+        },
+        complete: function (xhr, status) {
+            console.log('complete', status, xhr);
+        }
+    })
+
+}
+
+//填充个人信息
+function fill_self_info() {
+    // var a = {
+    //     "Alias": "",
+    //     "AppAccountFlag": 0,
+    //     "AttrStatus": 0,
+    //     "ChatRoomId": 0,
+    //     "City": "",
+    //     "ContactFlag": 0,
+    //     "DisplayName": "",
+    //     "EncryChatRoomId": "",
+    //     "HeadImgFlag": 1,
+    //     "HeadImgUrl": "/cgi-bin/mmwebwx-bin/webwxgeticon?seq=1204912241&username=@cafd7e55ec10b8d9d12752f70a701a43d656c8b64ef40a4701d3e99cd23fa4bd&skey=@crypt_59452412_f4255c16ddff4191de901d1497210a3a",
+    //     "HideInputBarFlag": 0,
+    //     "KeyWord": "",
+    //     "MemberCount": 0,
+    //     "MemberList": [],
+    //     "NickName": "superychen",
+    //     "OwnerUin": 0,
+    //     "PYInitial": "",
+    //     "PYQuanPin": "",
+    //     "Province": "",
+    //     "RemarkName": "",
+    //     "RemarkPYInitial": "",
+    //     "RemarkPYQuanPin": "",
+    //     "Sex": 1,
+    //     "Signature": "我说今晚月光那么美，你说是的",
+    //     "SnsFlag": 1,
+    //     "StarFriend": 0,
+    //     "Statues": 0,
+    //     "Uin": 592666042,
+    //     "UniFriend": 0,
+    //     "UserName": "@cafd7e55ec10b8d9d12752f70a701a43d656c8b64ef40a4701d3e99cd23fa4bd",
+    //     "VerifyFlag": 0,
+    //     "WebWxPluginSwitch": 0
+    // };
+    $('#avatar_1').attr('src', 'https://wx2.qq.com' + self['HeadImgUrl']);
+    $('#username').text(self['NickName']);
+    $('#account').text(self['Uin']);
+    $('#location').text(self['Province'] + ' ' + self['City']);
+    $('#avatar_2').attr('src', 'https://wx2.qq.com' + self['HeadImgUrl']);
+    if (self['Sex'] === 1) {
+        $('#gender').attr('src', '../static/images/icon/male.png');
+    } else {
+        $('#gender').attr('src', '../static/images/icon/female.png');
+    }
+}
+
 
 //加载性别分布表
 function load_gender() {

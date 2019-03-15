@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>基于Amaze UI仿微信电脑版聊天样式 - A5源码 </title>
+    <title>分析报告</title>
     <link rel="stylesheet" href="../static/css/amazeui.min.css"/>
     <link rel="stylesheet" href="../static/css/main.css"/>
     <link rel="stylesheet" href="../static/font-awesome-4.7.0/css/font-awesome.min.css">
@@ -13,6 +13,7 @@
     </style>
 </head>
 <body>
+<div id="uid" style="display: none">{{uid}}</div>
 <div class="box">
     <div class="wechat">
 
@@ -23,15 +24,15 @@
                 <div class="am-dropdown-content">
                     <div class="own_head_top">
                         <div class="own_head_top_text">
-                            <p class="own_name" id="username">彭于晏丶plus
-                                <img id="gender" src="../static/images/icon/head.png" alt=""/>
+                            <p class="own_name"><span id="username">彭于晏丶plus</span>
+                                <img id="gender" src="../static/images/icon/male.png" alt=""/>
                             </p>
                             <p class="own_numb">微信号：<span id="account">123456</span></p>
                         </div>
                         <img id="avatar_2" src="../static/images/own_head.jpg" alt=""/>
                     </div>
                     <div class="own_head_bottom">
-                        <p><span>地区</span>江西 九江</p>
+                        <p><span style="color: #999;margin-right: 10px;">地区</span><span id="location">江西 九江</span></p>
                         <!--<div class="own_head_bottom_img">-->
                         <!--<a href=""><img src="../static/images/icon/head_1.png"/></a>-->
                         <!--<a href=""><img src="../static/images/icon/head_2.png"/></a>-->
@@ -43,13 +44,13 @@
             <!--三图标-->
             <div class="sidestrip_icon">
                 <!--性别分布-->
-                <i id="item-gender" class="tab fa fa-venus-mars"
+                <i id="item-gender" class="tab fa fa-venus-mars cur"
                    onclick="changeTab('item-gender','tab-content-gender',load_gender())"></i>
                 <!--头像照片墙-->
                 <i id="item-avatars" class="tab fa fa-users"
                    onclick="changeTab('item-avatars','tab-content-avatar',load_avatars())"></i>
                 <!--签名词云-->
-                <i id="item-wordcloud" class="tab fa fa-cloud cur"
+                <i id="item-wordcloud" class="tab fa fa-cloud"
                    onclick="changeTab('item-wordcloud','tab-content-wordcloud',load_wordcloud())"></i>
                 <!--位置分布-->
                 <i id="item-locations" class="tab fa fa-paper-plane"
@@ -59,7 +60,7 @@
         </div>
 
         <!--性别分布-->
-        <div class="middle" id="tab-content-gender">
+        <div class="middle on" id="tab-content-gender">
             <!--性别分布-->
             <div id="ec-gender" style="width: 800px;height: 680px"></div>
         </div>
@@ -72,7 +73,7 @@
         </div>
 
         <!--签名词云-->
-        <div class="middle on" id="tab-content-wordcloud">
+        <div class="middle" id="tab-content-wordcloud">
             <div id="word-cloud" style="width: 800px;height: 680px;"></div>
         </div>
 
@@ -91,9 +92,18 @@
 <script type="text/javascript" src="../static/js/wordcloud2.js"></script>
 <script type="text/javascript" src="../static/js/wechat.js"></script>
 <script type="text/javascript">
+    //防止页面后退
+    history.pushState(null, null, document.URL);
+    window.addEventListener('popstate', function () {
+        history.pushState(null, null, document.URL);
+    });
+
 
     //三图标
     window.onload = function () {
+        //加载好友信息
+        get_contacts()
+
         //加载性别分布图
         // load_gender();
         //加载地域分布图
@@ -101,7 +111,7 @@
         //加载头像
         // load_avatars();
         //加载词云
-        load_wordcloud();
+        // load_wordcloud();
     };
 
 </script>

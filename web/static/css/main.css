@@ -182,6 +182,12 @@ ul li {
     float: right;
 }
 
+/*.male {*/
+    /*color: #35d9ec;*/
+    /*float: right;*/
+    /*font-size: 20px;*/
+/*}*/
+
 .own_head_top_text {
     float: left;
 }
@@ -194,10 +200,10 @@ ul li {
     color: #333;
 }
 
-.own_head_bottom p > span {
-    color: #999;
-    margin-right: 10px;
-}
+/*.own_head_bottom p > span {*/
+    /*color: #999;*/
+    /*margin-right: 10px;*/
+/*}*/
 
 .own_head_bottom_img {
     display: inline-block;
