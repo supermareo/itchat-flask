@@ -20,19 +20,21 @@
         <div class="sidestrip">
             <div class="am-dropdown" data-am-dropdown>
                 <!--头像插件-->
-                <div class="own_head am-dropdown-toggle" id="avatar_1"></div>
+                <div class="own_head am-dropdown-toggle"><img id="avatar_1" src="../static/images/avatar_holder.png"
+                                                              alt="头像">
+                </div>
                 <div class="am-dropdown-content">
                     <div class="own_head_top">
                         <div class="own_head_top_text">
-                            <p class="own_name"><span id="username">彭于晏丶plus</span>
-                                <img id="gender" src="../static/images/icon/male.png" alt=""/>
+                            <p class="own_name"><span id="username"></span>
+                                <img id="gender" src="../static/images/icon/male.png" alt="性别"/>
                             </p>
-                            <p class="own_numb">微信号：<span id="account">123456</span></p>
+                            <p class="own_numb">微信号：<span id="account"></span></p>
                         </div>
-                        <img id="avatar_2" src="../static/images/own_head.jpg" alt=""/>
+                        <img id="avatar_2" src="../static/images/avatar_holder.png" alt="头像"/>
                     </div>
                     <div class="own_head_bottom">
-                        <p><span style="color: #999;margin-right: 10px;">地区</span><span id="location">江西 九江</span></p>
+                        <p><span style="color: #999;margin-right: 10px;">地区</span><span id="location"></span></p>
                         <!--<div class="own_head_bottom_img">-->
                         <!--<a href=""><img src="../static/images/icon/head_1.png"/></a>-->
                         <!--<a href=""><img src="../static/images/icon/head_2.png"/></a>-->
@@ -45,7 +47,7 @@
             <div class="sidestrip_icon">
                 <!--性别分布-->
                 <i id="item-gender" class="tab fa fa-venus-mars cur"
-                   onclick="changeTab('item-gender','tab-content-gender',load_gender())"></i>
+                   onclick="changeTab('item-gender','tab-content-gender',load_sex_info())"></i>
                 <!--头像照片墙-->
                 <i id="item-avatars" class="tab fa fa-users"
                    onclick="changeTab('item-avatars','tab-content-avatar',load_avatars())"></i>
@@ -101,8 +103,12 @@
 
     //三图标
     window.onload = function () {
+        //加载自己的信息
+        load_self_info();
+        //加载性别信息
+        load_sex_info();
         //加载好友信息
-        get_contacts()
+        //get_contacts()
 
         //加载性别分布图
         // load_gender();

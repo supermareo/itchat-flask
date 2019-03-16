@@ -60,20 +60,19 @@ var self = {};
 //好友信息
 var contacts = [];
 
-function get_contacts() {
+//加载个人信息
+function load_self_info() {
     $.ajax({
-        url: 'http://127.0.0.1:5000/api/contacts/' + uid,
+        url: 'http://127.0.0.1:5000/api/self/' + uid,
         beforeSend: function (xhr) {
             console.log('before send');
         },
         success: function (result, status, xhr) {
             success = result['success'];
-            console.log('success', success);
             data = result['data'];
-            self = data[0];
+            console.log('success', success, data);
+            self = data;
             fill_self_info();
-            contacts = data.slice(1);
-            load_avatars();
         },
         error: function (xhr, status, error) {
             console.log('error', status, error, xhr)
@@ -82,50 +81,15 @@ function get_contacts() {
             console.log('complete', status, xhr);
         }
     })
-
 }
 
 //填充个人信息
 function fill_self_info() {
-    // var a = {
-    //     "Alias": "",
-    //     "AppAccountFlag": 0,
-    //     "AttrStatus": 0,
-    //     "ChatRoomId": 0,
-    //     "City": "",
-    //     "ContactFlag": 0,
-    //     "DisplayName": "",
-    //     "EncryChatRoomId": "",
-    //     "HeadImgFlag": 1,
-    //     "HeadImgUrl": "/cgi-bin/mmwebwx-bin/webwxgeticon?seq=1204912241&username=@cafd7e55ec10b8d9d12752f70a701a43d656c8b64ef40a4701d3e99cd23fa4bd&skey=@crypt_59452412_f4255c16ddff4191de901d1497210a3a",
-    //     "HideInputBarFlag": 0,
-    //     "KeyWord": "",
-    //     "MemberCount": 0,
-    //     "MemberList": [],
-    //     "NickName": "superychen",
-    //     "OwnerUin": 0,
-    //     "PYInitial": "",
-    //     "PYQuanPin": "",
-    //     "Province": "",
-    //     "RemarkName": "",
-    //     "RemarkPYInitial": "",
-    //     "RemarkPYQuanPin": "",
-    //     "Sex": 1,
-    //     "Signature": "我说今晚月光那么美，你说是的",
-    //     "SnsFlag": 1,
-    //     "StarFriend": 0,
-    //     "Statues": 0,
-    //     "Uin": 592666042,
-    //     "UniFriend": 0,
-    //     "UserName": "@cafd7e55ec10b8d9d12752f70a701a43d656c8b64ef40a4701d3e99cd23fa4bd",
-    //     "VerifyFlag": 0,
-    //     "WebWxPluginSwitch": 0
-    // };
-    $('#avatar_1').attr('src', 'https://wx2.qq.com' + self['HeadImgUrl']);
+    $('#avatar_1').attr('src', self['avatar']);
     $('#username').text(self['NickName']);
     $('#account').text(self['Uin']);
     $('#location').text(self['Province'] + ' ' + self['City']);
-    $('#avatar_2').attr('src', 'https://wx2.qq.com' + self['HeadImgUrl']);
+    $('#avatar_2').attr('src', self['avatar']);
     if (self['Sex'] === 1) {
         $('#gender').attr('src', '../static/images/icon/male.png');
     } else {
@@ -133,9 +97,29 @@ function fill_self_info() {
     }
 }
 
+//加载好友性别分布信息
+function load_sex_info() {
+    $.ajax({
+        url: 'http://127.0.0.1:5000/api/sex/' + uid,
+        beforeSend: function (xhr) {
+            console.log('before send');
+        },
+        success: function (result, status, xhr) {
+            success = result['success'];
+            data = result['data'];
+            console.log('success', success, data);
+            fill_sex_info(data);
+        },
+        error: function (xhr, status, error) {
+            console.log('error', status, error, xhr)
+        },
+        complete: function (xhr, status) {
+            console.log('complete', status, xhr);
+        }
+    })
+}
 
-//加载性别分布表
-function load_gender() {
+function fill_sex_info(data) {
     // 基于准备好的dom，初始化echarts实例
     var myChart = echarts.init(document.getElementById('ec-gender'));
 
@@ -159,7 +143,7 @@ function load_gender() {
             min: 80,
             max: 600,
             inRange: {
-                colorLightness: [0, 1]
+                colorLightness: [0.5, 1]
             }
         },
         series: [
@@ -168,13 +152,7 @@ function load_gender() {
                 type: 'pie',
                 radius: '55%',
                 center: ['50%', '50%'],
-                data: [
-                    {value: 535, name: '男'},
-                    {value: 310, name: '女'},
-                    {value: 100, name: '其它'}
-                ].sort(function (a, b) {
-                    return a.value - b.value;
-                }),
+                data: data,
                 roseType: 'radius',
                 label: {
                     normal: {
@@ -213,6 +191,112 @@ function load_gender() {
     // 使用刚指定的配置项和数据显示图表。
     myChart.setOption(option);
 }
+
+// function get_contacts() {
+//     $.ajax({
+//         url: 'http://127.0.0.1:5000/api/contacts/' + uid,
+//         beforeSend: function (xhr) {
+//             console.log('before send');
+//         },
+//         success: function (result, status, xhr) {
+//             success = result['success'];
+//             console.log('success', success);
+//             data = result['data'];
+//             self = data[0];
+//             fill_self_info();
+//             contacts = data.slice(1);
+//             load_avatars();
+//         },
+//         error: function (xhr, status, error) {
+//             console.log('error', status, error, xhr)
+//         },
+//         complete: function (xhr, status) {
+//             console.log('complete', status, xhr);
+//         }
+//     })
+//
+// }
+
+
+// //加载性别分布表
+// function load_gender(data) {
+//     // 基于准备好的dom，初始化echarts实例
+//     var myChart = echarts.init(document.getElementById('ec-gender'));
+//
+//     // 指定图表的配置项和数据
+//     var option = {
+//         backgroundColor: '#2c343c',
+//         title: {
+//             text: '好友性别分布',
+//             left: 'center',
+//             top: 20,
+//             textStyle: {
+//                 color: '#ccc'
+//             }
+//         },
+//         tooltip: {
+//             trigger: 'item',
+//             formatter: "{a} <br/>{b} : {c} ({d}%)"
+//         },
+//         visualMap: {
+//             show: false,
+//             min: 80,
+//             max: 600,
+//             inRange: {
+//                 colorLightness: [0.5, 1]
+//             }
+//         },
+//         series: [
+//             {
+//                 name: '性别',
+//                 type: 'pie',
+//                 radius: '55%',
+//                 center: ['50%', '50%'],
+//                 data: [
+//                     {value: 4, name: '男'},
+//                     {value: 2, name: '女'},
+//                     {value: 0, name: '其它'}
+//                 ].sort(function (a, b) {
+//                     return a.value - b.value;
+//                 }),
+//                 roseType: 'radius',
+//                 label: {
+//                     normal: {
+//                         textStyle: {
+//                             color: 'rgba(255, 255, 255, 0.3)'
+//                         }
+//                     }
+//                 },
+//                 labelLine: {
+//                     normal: {
+//                         lineStyle: {
+//                             color: 'rgba(255, 255, 255, 0.3)'
+//                         },
+//                         smooth: 0.2,
+//                         length: 10,
+//                         length2: 20
+//                     }
+//                 },
+//                 itemStyle: {
+//                     normal: {
+//                         color: '#c23531',
+//                         shadowBlur: 200,
+//                         shadowColor: 'rgba(0, 0, 0, 0.5)'
+//                     }
+//                 },
+//
+//                 animationType: 'scale',
+//                 animationEasing: 'elasticOut',
+//                 animationDelay: function (idx) {
+//                     return Math.random() * 200;
+//                 }
+//             }
+//         ]
+//     };
+//
+//     // 使用刚指定的配置项和数据显示图表。
+//     myChart.setOption(option);
+// }
 
 //加载好友头像照片墙
 function load_avatars() {

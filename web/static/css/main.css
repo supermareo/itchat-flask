@@ -134,8 +134,13 @@ ul li {
     height: 34px;
     margin-left: 13px;
     border-radius: 2px;
-    background: url(../images/own_head.jpg);
-    background-size: 34px;
+    /*background: url(../images/own_head.jpg);*/
+    /*background-size: 34px;*/
+}
+
+.own_head img {
+    width: 34px;
+    height: 34px;
 }
 
 .am-dropdown-content {
@@ -183,9 +188,9 @@ ul li {
 }
 
 /*.male {*/
-    /*color: #35d9ec;*/
-    /*float: right;*/
-    /*font-size: 20px;*/
+/*color: #35d9ec;*/
+/*float: right;*/
+/*font-size: 20px;*/
 /*}*/
 
 .own_head_top_text {
@@ -201,8 +206,8 @@ ul li {
 }
 
 /*.own_head_bottom p > span {*/
-    /*color: #999;*/
-    /*margin-right: 10px;*/
+/*color: #999;*/
+/*margin-right: 10px;*/
 /*}*/
 
 .own_head_bottom_img {

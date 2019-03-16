@@ -64,6 +64,30 @@ def login_status(uid):
     return response
 
 
+@app.route('/api/self/<uid>')
+def get_self_info(uid):
+    print('get_self_info', uid)
+    data = itchat_util.get_self_info(uid)
+    response = make_response(jsonify({
+        'success': True,
+        'data': data
+    }))
+    response.headers['Access-Control-Allow-Origin'] = '*'
+    return response
+
+
+@app.route('/api/sex/<uid>')
+def get_sex_info(uid):
+    print('get_sex_info', uid)
+    data = itchat_util.get_sex_info(uid)
+    response = make_response(jsonify({
+        'success': True,
+        'data': data
+    }))
+    response.headers['Access-Control-Allow-Origin'] = '*'
+    return response
+
+
 @app.route('/api/contacts/<uid>')
 def get_contacts(uid):
     print('get_contacts', uid)
