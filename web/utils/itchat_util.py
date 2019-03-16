@@ -3,6 +3,9 @@ import base64
 import os
 import threading
 import time
+import re
+from collections import Counter
+import jieba
 
 import itchat
 
@@ -15,6 +18,9 @@ friends_map = {}
 avatar_map = {}
 self_info_map = {}
 sex_info_map = {}
+avatars_info_map = {}
+locations_info_map = {}
+word_cloud_map = {}
 
 
 def update_status(uid, status):
@@ -107,6 +113,8 @@ def load_friends(uid):
         {'value': 0, 'name': '女'},
         {'value': 0, 'name': '其它'}
     ]
+    locations = {}
+    sig_list = []
     for friend in friends:
         sex = friend['Sex']
         if sex == 1:
@@ -115,12 +123,43 @@ def load_friends(uid):
             sex_info[1]['value'] = sex_info[1]['value'] + 1
         else:
             sex_info[2]['value'] = sex_info[2]['value'] + 1
+
+        province = friend['Province']
+        if province.strip() == '':
+            province = '其它'
+        if not province in locations:
+            locations[province] = 0
+        locations[province] = locations[province] + 1
+
+        signature = friend.get('Signature').strip().replace('emoji', '').replace('span', '').replace('class', '')
+        rep = re.compile('1f\d+\w*|[<>/=]')
+        signature = rep.sub('', signature)
+        sig_list.append(signature)
+
     sex_info_map[uid] = sex_info
+    provinces = []
+    counts = []
+    for province, count in locations.items():
+        provinces.append(province)
+        counts.append(count)
+    locations_info_map[uid] = {
+        'province': provinces,
+        'count': counts
+    }
+
+    signatures = ''.join(sig_list)
+    word_list = jieba.cut(signatures, cut_all=True)
+    word_list = list(filter(lambda x: x.strip() != '', word_list))
+    word_cloud_map[uid] = dict(Counter(word_list))
 
     load_friends_status_map[uid] = 'LOADED'
     download_avatars(instance, uid, friends)
+    avatars = []
     for friend in friends:
-        friend['avatar'] = avatar_map[uid][friend["UserName"]]
+        avatar = avatar_map[uid][friend["UserName"]]
+        friend['avatar'] = avatar
+        avatars.append(avatar)
+    avatars_info_map[uid] = avatars
     friends_map[uid] = friends
     load_friends_status_map[uid] = 'COMPLETE'
     print('load friends of', uid, 'complete')
@@ -145,6 +184,24 @@ def get_sex_info(uid):
     while not uid in sex_info_map:
         time.sleep(1)
     return sex_info_map[uid]
+
+
+def get_avatars(uid):
+    while not uid in avatars_info_map:
+        time.sleep(1)
+    return avatars_info_map[uid]
+
+
+def get_locations(uid):
+    while not uid in locations_info_map:
+        time.sleep(1)
+    return locations_info_map[uid]
+
+
+def get_word_cloud(uid):
+    while not uid in word_cloud_map:
+        time.sleep(1)
+    return word_cloud_map[uid]
 
 
 def get_friends(uid):

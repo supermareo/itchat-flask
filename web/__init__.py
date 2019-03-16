@@ -88,16 +88,50 @@ def get_sex_info(uid):
     return response
 
 
-@app.route('/api/contacts/<uid>')
-def get_contacts(uid):
-    print('get_contacts', uid)
-    data = itchat_util.get_friends(uid)
+@app.route('/api/avatars/<uid>')
+def get_avatars_info(uid):
+    print('get_avatars_info', uid)
+    data = itchat_util.get_avatars(uid)
     response = make_response(jsonify({
         'success': True,
         'data': data
     }))
     response.headers['Access-Control-Allow-Origin'] = '*'
     return response
+
+
+@app.route('/api/locations/<uid>')
+def get_locations_info(uid):
+    print('get_locations_info', uid)
+    data = itchat_util.get_locations(uid)
+    response = make_response(jsonify({
+        'success': True,
+        'data': data
+    }))
+    response.headers['Access-Control-Allow-Origin'] = '*'
+    return response
+
+@app.route('/api/word_cloud/<uid>')
+def get_word_cloud_info(uid):
+    print('get_word_cloud_info', uid)
+    data = itchat_util.get_word_cloud(uid)
+    response = make_response(jsonify({
+        'success': True,
+        'data': data
+    }))
+    response.headers['Access-Control-Allow-Origin'] = '*'
+    return response
+
+# @app.route('/api/contacts/<uid>')
+# def get_contacts(uid):
+#     print('get_contacts', uid)
+#     data = itchat_util.get_friends(uid)
+#     response = make_response(jsonify({
+#         'success': True,
+#         'data': data
+#     }))
+#     response.headers['Access-Control-Allow-Origin'] = '*'
+#     return response
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 

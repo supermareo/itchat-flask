@@ -6,9 +6,6 @@ $(function () {
     $(".office_text").panel({iWheelStep: 32});
 });
 
-// $(function () {
-// });
-
 //tab for three icon	
 $(document).ready(function () {
     $(".sidestrip_icon a").click(function () {
@@ -55,10 +52,12 @@ function changeTab(iid, did) {
     $('#' + did).addClass('on');
 }
 
+let is_sex_loaded = false;
+let is_avatar_loaded = false;
+let is_word_cloud_loaded = false;
+let is_location_loaded = false;
 //个人信息
-var self = {};
-//好友信息
-var contacts = [];
+let self = {};
 
 //加载个人信息
 function load_self_info() {
@@ -99,6 +98,9 @@ function fill_self_info() {
 
 //加载好友性别分布信息
 function load_sex_info() {
+    if (is_sex_loaded) {
+        return
+    }
     $.ajax({
         url: 'http://127.0.0.1:5000/api/sex/' + uid,
         beforeSend: function (xhr) {
@@ -108,6 +110,7 @@ function load_sex_info() {
             success = result['success'];
             data = result['data'];
             console.log('success', success, data);
+            is_sex_loaded = true;
             fill_sex_info(data);
         },
         error: function (xhr, status, error) {
@@ -119,6 +122,7 @@ function load_sex_info() {
     })
 }
 
+//填充好友性别分布信息
 function fill_sex_info(data) {
     // 基于准备好的dom，初始化echarts实例
     var myChart = echarts.init(document.getElementById('ec-gender'));
@@ -192,120 +196,34 @@ function fill_sex_info(data) {
     myChart.setOption(option);
 }
 
-// function get_contacts() {
-//     $.ajax({
-//         url: 'http://127.0.0.1:5000/api/contacts/' + uid,
-//         beforeSend: function (xhr) {
-//             console.log('before send');
-//         },
-//         success: function (result, status, xhr) {
-//             success = result['success'];
-//             console.log('success', success);
-//             data = result['data'];
-//             self = data[0];
-//             fill_self_info();
-//             contacts = data.slice(1);
-//             load_avatars();
-//         },
-//         error: function (xhr, status, error) {
-//             console.log('error', status, error, xhr)
-//         },
-//         complete: function (xhr, status) {
-//             console.log('complete', status, xhr);
-//         }
-//     })
-//
-// }
-
-
-// //加载性别分布表
-// function load_gender(data) {
-//     // 基于准备好的dom，初始化echarts实例
-//     var myChart = echarts.init(document.getElementById('ec-gender'));
-//
-//     // 指定图表的配置项和数据
-//     var option = {
-//         backgroundColor: '#2c343c',
-//         title: {
-//             text: '好友性别分布',
-//             left: 'center',
-//             top: 20,
-//             textStyle: {
-//                 color: '#ccc'
-//             }
-//         },
-//         tooltip: {
-//             trigger: 'item',
-//             formatter: "{a} <br/>{b} : {c} ({d}%)"
-//         },
-//         visualMap: {
-//             show: false,
-//             min: 80,
-//             max: 600,
-//             inRange: {
-//                 colorLightness: [0.5, 1]
-//             }
-//         },
-//         series: [
-//             {
-//                 name: '性别',
-//                 type: 'pie',
-//                 radius: '55%',
-//                 center: ['50%', '50%'],
-//                 data: [
-//                     {value: 4, name: '男'},
-//                     {value: 2, name: '女'},
-//                     {value: 0, name: '其它'}
-//                 ].sort(function (a, b) {
-//                     return a.value - b.value;
-//                 }),
-//                 roseType: 'radius',
-//                 label: {
-//                     normal: {
-//                         textStyle: {
-//                             color: 'rgba(255, 255, 255, 0.3)'
-//                         }
-//                     }
-//                 },
-//                 labelLine: {
-//                     normal: {
-//                         lineStyle: {
-//                             color: 'rgba(255, 255, 255, 0.3)'
-//                         },
-//                         smooth: 0.2,
-//                         length: 10,
-//                         length2: 20
-//                     }
-//                 },
-//                 itemStyle: {
-//                     normal: {
-//                         color: '#c23531',
-//                         shadowBlur: 200,
-//                         shadowColor: 'rgba(0, 0, 0, 0.5)'
-//                     }
-//                 },
-//
-//                 animationType: 'scale',
-//                 animationEasing: 'elasticOut',
-//                 animationDelay: function (idx) {
-//                     return Math.random() * 200;
-//                 }
-//             }
-//         ]
-//     };
-//
-//     // 使用刚指定的配置项和数据显示图表。
-//     myChart.setOption(option);
-// }
-
 //加载好友头像照片墙
 function load_avatars() {
-    for (let i = 0; i < 500; i++) {
-        $('#avatar-wall').append('<img src="data:image/jpeg;base64,/9j/4QAYRXhpZgAASUkqAAgAAAAAAAAAAAAAAP/sABFEdWNreQABAAQAAABQAAD/4QMvaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wLwA8P3hwYWNrZXQgYmVnaW49Iu+7vyIgaWQ9Ilc1TTBNcENlaGlIenJlU3pOVGN6a2M5ZCI/PiA8eDp4bXBtZXRhIHhtbG5zOng9ImFkb2JlOm5zOm1ldGEvIiB4OnhtcHRrPSJBZG9iZSBYTVAgQ29yZSA1LjYtYzEzOCA3OS4xNTk4MjQsIDIwMTYvMDkvMTQtMDE6MDk6MDEgICAgICAgICI+IDxyZGY6UkRGIHhtbG5zOnJkZj0iaHR0cDovL3d3dy53My5vcmcvMTk5OS8wMi8yMi1yZGYtc3ludGF4LW5zIyI+IDxyZGY6RGVzY3JpcHRpb24gcmRmOmFib3V0PSIiIHhtbG5zOnhtcD0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wLyIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bXA6Q3JlYXRvclRvb2w9IkFkb2JlIFBob3Rvc2hvcCBDQyAyMDE3IChXaW5kb3dzKSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDpBRkIxNUM0MzhEQjgxMUU4QUU1REM4NDMyNkNBQjZFOSIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDpBRkIxNUM0NDhEQjgxMUU4QUU1REM4NDMyNkNBQjZFOSI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkFGQjE1QzQxOERCODExRThBRTVEQzg0MzI2Q0FCNkU5IiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOkFGQjE1QzQyOERCODExRThBRTVEQzg0MzI2Q0FCNkU5Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+/+4AJkFkb2JlAGTAAAAAAQMAFQQDBgoNAAAGDAAAB7YAAAk7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" style="width: 50px;height: 50px;margin: 5px">')
+    if (is_avatar_loaded) {
+        return
     }
-}
+    $.ajax({
+        url: 'http://127.0.0.1:5000/api/avatars/' + uid,
+        beforeSend: function (xhr) {
+            console.log('before send');
+        },
+        success: function (result, status, xhr) {
+            success = result['success'];
+            data = result['data'];
+            console.log('success', success, data);
+            is_avatar_loaded = true;
+            for (let i = 0; i < data.length; i++) {
+                $('#avatar-wall').append('<img style="width: 50px;height: 50px;margin: 5px" alt="" src=' + data[i] + '>')
+            }
+        },
+        error: function (xhr, status, error) {
+            console.log('error', status, error, xhr)
+        },
+        complete: function (xhr, status) {
+            console.log('complete', status, xhr);
+        }
+    });
 
-let is_word_cloud_loaded = false;
+}
 
 function randomWor() {
     var chinese = ['啊', '是', '额', '想', '的', '个', '去', '好', '需', '看', '屁', '吗', '吧', '就', '旧', '小', '晓'];
@@ -319,18 +237,62 @@ function load_wordcloud() {
     if (is_word_cloud_loaded) {
         return
     }
+    $.ajax({
+        url: 'http://127.0.0.1:5000/api/word_cloud/' + uid,
+        beforeSend: function (xhr) {
+            console.log('before send');
+        },
+        success: function (result, status, xhr) {
+            success = result['success'];
+            data = result['data'];
+            console.log('success', success, data);
+            is_word_cloud_loaded = true;
+            fill_wordcloud(data)
+        },
+        error: function (xhr, status, error) {
+            console.log('error', status, error, xhr)
+        },
+        complete: function (xhr, status) {
+            console.log('complete', status, xhr);
+        }
+    });
+}
 
-    var wordFreqData = [];
-    for (var i = 0; i < 500; i++) {
-        wordFreqData.push([randomWor(), Math.round(Math.random() * 1000)])
+function fill_wordcloud(data) {
+    let word_list = [];
+    let freq_list = [];
+    let max = 0;
+    $.each(data, function (word, freq) {
+        word_list.push(word);
+        freq_list.push(freq);
+        if (max < freq) {
+            max = freq
+        }
+    });
+    while (max > 100) {
+        max = Math.sqrt(max);
+        for (let i = 0; i < freq_list.length; i++) {
+            freq_list[i] = Math.sqrt(freq_list[i])
+        }
     }
 
+    var wordFreqData = [];
+    for (let i = 0; i < word_list.length; i++) {
+        wordFreqData.push([word_list[i], freq_list[i]])
+    }
+
+    console.log('wordFreqData', wordFreqData);
     var canvas = document.getElementById('word-cloud');
     var options = eval({
         list: wordFreqData,
         gridSize: Math.round(16 * $('#word-cloud').width() / 1024),
         weightFactor: function (size) {
-            return size * $('#word-cloud').width() / 4096
+            result = size * $('#word-cloud').width() / 80;
+            while (result < 30) {
+                result = result * 1.4;
+            }
+            console.log(size, result, wordFreqData.length, $('#word-cloud').width());
+            return result
         },
         fontFamily: 'Times, serif',
         color: "random-light",
@@ -338,16 +300,40 @@ function load_wordcloud() {
         // rotationSteps: 2,
         backgroundColor: '#2c343c',
         minFontSize: 6, //最小字号
+        maxFontSize: 50,
         fontWeight: 'normal', //字体粗细
     });
     //生成
     WordCloud(canvas, options);
-
-    is_word_cloud_loaded = true
 }
 
 //加载地域分布表
 function load_locations() {
+    if (is_location_loaded) {
+        return
+    }
+    $.ajax({
+        url: 'http://127.0.0.1:5000/api/locations/' + uid,
+        beforeSend: function (xhr) {
+            console.log('before send');
+        },
+        success: function (result, status, xhr) {
+            success = result['success'];
+            data = result['data'];
+            console.log('success', success, data);
+            is_location_loaded = true;
+            fill_location_info(data);
+        },
+        error: function (xhr, status, error) {
+            console.log('error', status, error, xhr)
+        },
+        complete: function (xhr, status) {
+            console.log('complete', status, xhr);
+        }
+    });
+}
+
+function fill_location_info(data) {
     // 基于准备好的dom，初始化echarts实例
     var myChart = echarts.init(document.getElementById('ec-locations'));
 
@@ -366,7 +352,8 @@ function load_locations() {
         },
         xAxis: {
             type: 'category',
-            data: ['江苏', '河北', '河南', '安徽', '浙江', '深圳', '乌鲁木齐', 'A', 'B', 'C', 'D', 'E', 'F'],
+            //['江苏', '河北', '河南', '安徽', '浙江', '深圳', '乌鲁木齐', 'A', 'B', 'C', 'D', 'E', 'F']
+            data: data['province'],
             axisLabel: {
                 interval: 0,
                 color: '#ccc',
@@ -393,12 +380,11 @@ function load_locations() {
             }
         },
         series: [{
-            data: [120, 2000, 150, 80, 70, 110, 130, 99, 120, 221, 324, 112, 90],
+            //[120, 2000, 150, 80, 70, 110, 130, 99, 120, 221, 324, 112, 90]
+            data: data['count'],
             type: 'bar'
         }]
     };
-
-
     // 使用刚指定的配置项和数据显示图表。
     myChart.setOption(option);
 }
