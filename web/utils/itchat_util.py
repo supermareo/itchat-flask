@@ -41,7 +41,7 @@ def qr_callback(uuid, status, qrcode, uid):
         # 获取到二维码
         update_status(uid, 'GET_QR')
 
-    path = '/data/' + uid + '.png'
+    path = uid + '.png'
     uuid_map[uid] = uuid
     with open(path, 'wb') as f:
         f.write(qrcode)
